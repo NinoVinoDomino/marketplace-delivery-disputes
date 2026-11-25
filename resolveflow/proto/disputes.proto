@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package resolveflow.disputes.v1;
+
+service DisputeService {
+  rpc OpenCase(OpenCaseRequest) returns (Case);
+  rpc AddMessage(AddMessageRequest) returns (Case);
+  rpc DecideRefund(DecideRefundRequest) returns (Case);
+  rpc GetCase(GetCaseRequest) returns (Case);
+  rpc RetryCase(GetCaseRequest) returns (Case);
+  rpc ListReviews(ListReviewsRequest) returns (ReviewQueue);
+  rpc CompleteReview(CompleteReviewRequest) returns (Case);
+}
+
+message OpenCaseRequest {
+  string case_id = 1;
+  string order_id = 2;
+  string text = 3;
+}
+
+message AddMessageRequest {
+  string case_id = 1;
+  string message_id = 2;
+  string text = 3;
+  string clarification_id = 4;
+}
+
+message DecideRefundRequest {
+  string case_id = 1;
+  optional bool approved = 2;
+}
+
+message GetCaseRequest {
+  string case_id = 1;
+}
+
+enum Stage {
+  STAGE_UNSPECIFIED = 0;
+  PROCESSING = 1;
+  NEEDS_CLARIFICATION = 2;
+  AWAITING_OPERATOR = 3;
+  RESOLVED = 4;
+  MANUAL_REVIEW = 5;
+  REFUND_DECLINED = 6;
+  REFUND_ISSUED = 7;
+  REFUND_ALREADY_ISSUED = 8;
+}
+
+message Case {
+  string case_id = 1;
+  string order_id = 2;
+  Stage stage = 3;
+  string policy_version = 4;
+  string reply = 5;
+  repeated string citations = 6;
+  string refund_id = 7;
+  string clarification_id = 8;
+  string policy_hash = 9;
+}
+
+message ListReviewsRequest {}
+
+message EvidenceItem {
+  string fact = 1;
+  bool value = 2;
+  string message_id = 3;
+  string quote = 4;
+}
+
+message Review {
+  Case dispute = 1;
+  string reason = 2;
+  repeated EvidenceItem evidence = 3;
+  string order_status = 4;
+  bool order_refundable = 5;
+  repeated string required_facts = 6;
+}
+
+message ReviewQueue {
+  repeated Review reviews = 1;
+}
+
+message CompleteReviewRequest {
+  string case_id = 1;
+  string reply = 2;
+}

@@ -1,0 +1,42 @@
+x-image: &resolveflow-image
+  image: marketplace-delivery-disputes:local
+  build: .
+
+services:
+  guardrail:
+    <<: *resolveflow-image
+    command: ["python", "-m", "resolveflow.mock_guardrail"]
+    environment:
+      ALLOW_INSECURE_CONTAINER_BIND: "1"
+      GUARDRAIL_BIND: "0.0.0.0:50051"
+    healthcheck:
+      test: ["CMD", "python", "-m", "resolveflow.healthcheck", "127.0.0.1:50051", "resolveflow.guardrails.v1.GuardrailService"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+      start_period: 3s
+
+  api:
+    <<: *resolveflow-image
+    env_file: .env
+    environment:
+      ALLOW_INSECURE_CONTAINER_BIND: "1"
+      API_BIND: "0.0.0.0:50052"
+      GUARDRAIL_TARGET: "guardrail:50051"
+      DATA_DIR: "/data"
+    ports:
+      - "127.0.0.1:50052:50052"
+    volumes:
+      - resolveflow-data:/data
+    depends_on:
+      guardrail:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-m", "resolveflow.healthcheck", "127.0.0.1:50052", "resolveflow.disputes.v1.DisputeService"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+      start_period: 3s
+
+volumes:
+  resolveflow-data:

@@ -1,0 +1,357 @@
+[
+  {
+    "name": "two negations",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "I have not called the carrier. My parcel is not missing."
+      }
+    ],
+    "facts": {
+      "carrier_checked": {
+        "value": false,
+        "message_id": "1",
+        "quote": "not called the carrier"
+      },
+      "parcel_missing": {
+        "value": false,
+        "message_id": "1",
+        "quote": "parcel is not missing"
+      }
+    },
+    "routes": {
+      "v1": "resolved",
+      "v2": "resolved",
+      "v3": "resolved"
+    }
+  },
+  {
+    "name": "confirmed both",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "I called the carrier; the package is still missing."
+      }
+    ],
+    "facts": {
+      "carrier_checked": {
+        "value": true,
+        "message_id": "1",
+        "quote": "called the carrier"
+      },
+      "parcel_missing": {
+        "value": true,
+        "message_id": "1",
+        "quote": "package is still missing"
+      }
+    },
+    "routes": {
+      "v1": "awaiting_operator",
+      "v2": "awaiting_operator",
+      "v3": "awaiting_operator"
+    }
+  },
+  {
+    "name": "short affirmative carrier",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "My parcel is missing."
+      },
+      {
+        "message_id": "2",
+        "text": "Yes.",
+        "question": "Have you contacted the carrier about the missing parcel?",
+        "target_fact": "carrier_checked"
+      }
+    ],
+    "facts": {
+      "carrier_checked": {
+        "value": true,
+        "message_id": "2",
+        "quote": "Yes"
+      },
+      "parcel_missing": {
+        "value": true,
+        "message_id": "1",
+        "quote": "parcel is missing"
+      }
+    },
+    "routes": {
+      "v1": "awaiting_operator",
+      "v2": "awaiting_operator",
+      "v3": "awaiting_operator"
+    }
+  },
+  {
+    "name": "short negative parcel",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "I contacted the carrier."
+      },
+      {
+        "message_id": "2",
+        "text": "No.",
+        "question": "Is the parcel still missing?",
+        "target_fact": "parcel_missing"
+      }
+    ],
+    "facts": {
+      "carrier_checked": {
+        "value": true,
+        "message_id": "1",
+        "quote": "contacted the carrier"
+      },
+      "parcel_missing": {
+        "value": false,
+        "message_id": "2",
+        "quote": "No"
+      }
+    },
+    "routes": {
+      "v1": "resolved",
+      "v2": "resolved",
+      "v3": "resolved"
+    }
+  },
+  {
+    "name": "unprompted affirmative",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "Yes."
+      }
+    ],
+    "facts": {
+      "carrier_checked": null,
+      "parcel_missing": null
+    },
+    "routes": {
+      "v1": "clarify:parcel_missing",
+      "v2": "clarify:parcel_missing",
+      "v3": "clarify:parcel_missing"
+    }
+  },
+  {
+    "name": "negation belongs to carrier",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "I didn't call the carrier, but the package never arrived."
+      }
+    ],
+    "facts": {
+      "carrier_checked": {
+        "value": false,
+        "message_id": "1",
+        "quote": "didn't call the carrier"
+      },
+      "parcel_missing": {
+        "value": true,
+        "message_id": "1",
+        "quote": "package never arrived"
+      }
+    },
+    "routes": {
+      "v1": "clarify:carrier_checked",
+      "v2": "clarify:carrier_checked",
+      "v3": "awaiting_operator"
+    }
+  },
+  {
+    "name": "negation belongs to parcel",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "I contacted the carrier and my package isn't missing."
+      }
+    ],
+    "facts": {
+      "carrier_checked": {
+        "value": true,
+        "message_id": "1",
+        "quote": "contacted the carrier"
+      },
+      "parcel_missing": {
+        "value": false,
+        "message_id": "1",
+        "quote": "package isn't missing"
+      }
+    },
+    "routes": {
+      "v1": "resolved",
+      "v2": "resolved",
+      "v3": "resolved"
+    }
+  },
+  {
+    "name": "explicit correction",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "The parcel is missing."
+      },
+      {
+        "message_id": "2",
+        "text": "Actually, I found the parcel.",
+        "question": "Have you contacted the carrier about the missing parcel?",
+        "target_fact": "carrier_checked"
+      }
+    ],
+    "facts": {
+      "carrier_checked": null,
+      "parcel_missing": {
+        "value": false,
+        "message_id": "2",
+        "quote": "found the parcel"
+      }
+    },
+    "routes": {
+      "v1": "resolved",
+      "v2": "resolved",
+      "v3": "resolved"
+    }
+  },
+  {
+    "name": "conflicting reports",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "I called the carrier, but I have not called the carrier. My parcel is missing."
+      },
+      {
+        "message_id": "2",
+        "text": "Maybe.",
+        "question": "Have you contacted the carrier about the missing parcel?",
+        "target_fact": "carrier_checked"
+      },
+      {
+        "message_id": "3",
+        "text": "Not sure.",
+        "question": "Have you contacted the carrier about the missing parcel?",
+        "target_fact": "carrier_checked"
+      }
+    ],
+    "facts": {
+      "carrier_checked": null,
+      "parcel_missing": {
+        "value": true,
+        "message_id": "1",
+        "quote": "parcel is missing"
+      }
+    },
+    "routes": {
+      "v1": "manual_review",
+      "v2": "manual_review",
+      "v3": "awaiting_operator"
+    }
+  },
+  {
+    "name": "speculation",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "Maybe the package is missing."
+      }
+    ],
+    "facts": {
+      "carrier_checked": null,
+      "parcel_missing": null
+    },
+    "routes": {
+      "v1": "clarify:parcel_missing",
+      "v2": "clarify:parcel_missing",
+      "v3": "clarify:parcel_missing"
+    }
+  },
+  {
+    "name": "explicit correction to carrier",
+    "order_id": "RF-1001",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "My parcel is missing. I have not called the carrier."
+      },
+      {
+        "message_id": "2",
+        "text": "Correction: I called the carrier.",
+        "question": "Have you contacted the carrier about the missing parcel?",
+        "target_fact": "carrier_checked"
+      }
+    ],
+    "facts": {
+      "carrier_checked": {
+        "value": true,
+        "message_id": "2",
+        "quote": "called the carrier"
+      },
+      "parcel_missing": {
+        "value": true,
+        "message_id": "1",
+        "quote": "parcel is missing"
+      }
+    },
+    "routes": {
+      "v1": "awaiting_operator",
+      "v2": "awaiting_operator",
+      "v3": "awaiting_operator"
+    }
+  },
+  {
+    "name": "nonrefundable order",
+    "order_id": "RF-1003",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "I contacted the carrier. My parcel is missing."
+      }
+    ],
+    "facts": {
+      "carrier_checked": {
+        "value": true,
+        "message_id": "1",
+        "quote": "contacted the carrier"
+      },
+      "parcel_missing": {
+        "value": true,
+        "message_id": "1",
+        "quote": "parcel is missing"
+      }
+    },
+    "routes": {
+      "v1": "manual_review",
+      "v2": "manual_review",
+      "v3": "manual_review"
+    }
+  },
+  {
+    "name": "nonrefundable order with incomplete evidence",
+    "order_id": "RF-1003",
+    "turns": [
+      {
+        "message_id": "1",
+        "text": "Where is my order?"
+      }
+    ],
+    "facts": {
+      "carrier_checked": null,
+      "parcel_missing": null
+    },
+    "routes": {
+      "v1": "manual_review",
+      "v2": "manual_review",
+      "v3": "manual_review"
+    }
+  }
+]

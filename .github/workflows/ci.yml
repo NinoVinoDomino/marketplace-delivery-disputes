@@ -1,0 +1,36 @@
+name: Marketplace Delivery Disputes CI
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  local-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m grpc_tools.protoc -I . --python_out=. --grpc_python_out=. resolveflow/proto/guardrails.proto resolveflow/proto/disputes.proto
+      - run: python -m unittest discover -v
+
+  compose-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate disposable demo settings
+        run: |
+          umask 077
+          python3 - <<'PY' > .env
+          from secrets import token_urlsafe
+
+          print(f"CUSTOMER_TOKEN={token_urlsafe(32)}")
+          print(f"OPERATOR_TOKEN={token_urlsafe(32)}")
+          PY
+      - run: docker compose up --build --wait
+      - run: docker compose exec -T api python -m resolveflow.demo --require-refund
+      - if: always()
+        run: docker compose down

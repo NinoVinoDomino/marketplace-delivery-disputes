@@ -1,0 +1,20 @@
+{
+  "version": "v2",
+  "rules": {
+    "delivery.evidence": "Ask the customer about any required delivery facts that remain unconfirmed.",
+    "delivery.follow_up": "The internal follow-up target is {hours} hours.",
+    "refund.approval": "Obtain supervisor approval before issuing a refund.",
+    "delivery.in_transit": "Tell the customer the parcel is still in transit."
+  },
+  "follow_up_hours": 24,
+  "refund_criteria": {
+    "order_statuses": [
+      "delivered"
+    ],
+    "require_refundable": true,
+    "required_facts": [
+      "parcel_missing",
+      "carrier_checked"
+    ]
+  }
+}

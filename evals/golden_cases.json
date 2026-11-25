@@ -1,0 +1,82 @@
+[
+  {
+    "name": "refund after clarification",
+    "order_id": "RF-1001",
+    "messages": [
+      "My parcel is missing.",
+      "I contacted the carrier. The parcel is still missing."
+    ],
+    "stages": [
+      "NEEDS_CLARIFICATION",
+      "AWAITING_OPERATOR"
+    ],
+    "citations": [
+      "refund.approval"
+    ]
+  },
+  {
+    "name": "delivery in progress",
+    "order_id": "RF-1002",
+    "messages": [
+      "My parcel is missing."
+    ],
+    "stages": [
+      "RESOLVED"
+    ],
+    "citations": [
+      "delivery.in_transit"
+    ]
+  },
+  {
+    "name": "manual review for ineligible order",
+    "order_id": "RF-1003",
+    "messages": [
+      "I contacted the carrier. My parcel is missing."
+    ],
+    "stages": [
+      "MANUAL_REVIEW"
+    ],
+    "citations": [
+      "refund.approval"
+    ]
+  },
+  {
+    "name": "confirmation of arrival",
+    "order_id": "RF-1001",
+    "messages": [
+      "My parcel is missing.",
+      "I found the parcel."
+    ],
+    "stages": [
+      "NEEDS_CLARIFICATION",
+      "RESOLVED"
+    ],
+    "citations": []
+  },
+  {
+    "name": "two negations",
+    "order_id": "RF-1001",
+    "messages": [
+      "I have not called the carrier. My parcel is not missing."
+    ],
+    "stages": [
+      "RESOLVED"
+    ],
+    "citations": []
+  },
+  {
+    "name": "contextual yes",
+    "order_id": "RF-1001",
+    "messages": [
+      "My parcel is missing.",
+      "Yes."
+    ],
+    "stages": [
+      "NEEDS_CLARIFICATION",
+      "AWAITING_OPERATOR"
+    ],
+    "citations": [
+      "refund.approval"
+    ]
+  }
+]

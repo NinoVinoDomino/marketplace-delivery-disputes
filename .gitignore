@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+resolveflow/proto/*_pb2*.py
+.env
+.env.*
+!.env.example
+.data/
